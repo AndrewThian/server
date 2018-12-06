@@ -23,6 +23,9 @@
   },
   "dependencies": {
     "csv-parse": "^4.0.1",
-    "stream-transform": "^1.0.7"
+    "mysql": "^2.16.0",
+    "reflect-metadata": "^0.1.12",
+    "stream-transform": "^1.0.7",
+    "typeorm": "^0.2.9"
   }
 }
