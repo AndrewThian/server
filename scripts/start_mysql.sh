@@ -23,13 +23,13 @@ echo "importing schema from : $ROOT_DIR"
 
 # copy schema.sql to mysql/init/db
 
-cp $ROOT_DIR/schema.sql $ROOT_DIR/mysql/init/dev.sql
-cp $ROOT_DIR/schema.sql $ROOT_DIR/mysql/init/test.sql
+# cp $ROOT_DIR/schema.sql $ROOT_DIR/mysql/init/dev.sql
+# cp $ROOT_DIR/schema.sql $ROOT_DIR/mysql/init/test.sql
 
-echo 'use dev;' | cat - $ROOT_DIR/mysql/init/dev.sql > temp && mv temp $ROOT_DIR/mysql/init/dev.sql
-echo 'use test;' | cat - $ROOT_DIR/mysql/init/test.sql > temp && mv temp $ROOT_DIR/mysql/init/test.sql
+# echo 'use dev;' | cat - $ROOT_DIR/mysql/init/dev.sql > temp && mv temp $ROOT_DIR/mysql/init/dev.sql
+# echo 'use test;' | cat - $ROOT_DIR/mysql/init/test.sql > temp && mv temp $ROOT_DIR/mysql/init/test.sql
 
-echo "copied schema.sql to {dev,test}.sql"
+# echo "copied schema.sql to {dev,test}.sql"
 
 CONTAINER_ID=restfulrant-mysql
 
@@ -49,5 +49,3 @@ if [ `docker inspect -f {{.State.Running}} $CONTAINER_ID` ]; then
 else
     echo "could not start container"
 fi
-
-# clean up files
