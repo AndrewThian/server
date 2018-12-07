@@ -1,1 +1,4 @@
 node_modules
+mysql/db/**/*
+mysql/init/dev.sql
+mysql/init/test.sql
