@@ -25,7 +25,9 @@ export class Parser implements IParser {
     }
 
     getCSVData(callback: _Callback) {
-        this.csvParser.on("readable", () => {
+        this.csvParser.on("error", () => {
+            console.error("[Parser] read stream error")
+        }).on("readable", () => {
             let record: _Record;
             // tslint:disable-next-line
             while ((record = this.csvParser.read())) {
