@@ -44,3 +44,7 @@ for (const dataSchedule of data.schedule) {
     await connection.manager.save(schedule);
 }
 ```
+
+**Aside!!**
+
+Typeorm doesn't yet support `ON DUPLICATE UPDATE` which leads me to provide my own implementation of such a feature. the `.upsert` static method on both `Restaurant` and `Schedule` are primitive but they work well for now.

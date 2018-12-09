@@ -1,7 +1,6 @@
 import { 
     Entity,
     PrimaryGeneratedColumn,
-    PrimaryColumn,
     Column,
     OneToMany,
     Unique,
@@ -29,10 +28,10 @@ export class Restaurant extends BaseEntity {
     @Column(() => Timestamp)
     timestamp: Timestamp
 
-    static async createOrUpdate(name: string) {
+    static async upsert(name: string) {
         let restaurant = await this.findOne({ name })
         if (!restaurant) {
-            const restaurant = new Restaurant()
+            const restaurant = this.create({ name })
             restaurant.name = name
             return this.save(restaurant)
         }

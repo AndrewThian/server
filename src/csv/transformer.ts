@@ -27,7 +27,7 @@ export class Transformer implements TransformerInterface {
      * Promise version of the getData for transformer
      * @returns promise array of restuarants
      */
-    getDataPromise(): Promise<IRestaurant[] | Error> {
+    getDataPromise(): Promise<IRestaurant[]> {
         this.parser.getCSVData((record: _Record) => {
             const transformed = this.transform(record);
             this.output.push(transformed);

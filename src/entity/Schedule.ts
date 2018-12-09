@@ -11,10 +11,17 @@ import {
 import { Timestamp } from "./Timestamp"
 import { Restaurant } from "./Restaurant";
 
+interface Data {
+    day: string
+    open: string
+    close: string
+}
+
 @Entity()
 @Index("restaurant_id", [ "restaurant" ])
 @Index("time_index", [ "openingHour", "closingHour" ])
 @Index("date_time_index", [ "dayOfTheWeek", "openingHour", "closingHour" ])
+@Unique("unique_schedule", [ "restaurant", "dayOfTheWeek", "openingHour", "closingHour" ])
 export class Schedule extends BaseEntity {
 
     @PrimaryGeneratedColumn()
@@ -50,5 +57,18 @@ export class Schedule extends BaseEntity {
     @Column(() => Timestamp)
     timestamp: Timestamp;
 
-    // createOrUpdate
+    static async upsert(restaurant: Restaurant, data: Data) {
+        const partial = { 
+            restaurant: restaurant, 
+            dayOfTheWeek: data.day, 
+            openingHour: data.open, 
+            closingHour: data.close 
+        }
+        const schedule = await this.findOne(partial)
+        if (!schedule) {
+            const schedule = this.create(partial)
+            return this.save(schedule)
+        }
+        return schedule
+    }
 }

@@ -12,7 +12,8 @@
     "prettify:ts": "prettier --write --config ./.prettierrc '{src,tests}/**/*.ts'",
     "lint:ts": "tslint -c tslint.json '{src,tests}/**/*.ts'",
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' src/index.ts",
-    "test": "jest || true"
+    "test": "jest || true",
+    "seed:restaurant": "ts-node -r tsconfig-paths/register src/parse.ts"
   },
   "keywords": [
     "api",
