@@ -11,9 +11,10 @@
     "build": "tsc",
     "prettify:ts": "prettier --write --config ./.prettierrc '{src,tests}/**/*.ts'",
     "lint:ts": "tslint -c tslint.json '{src,tests}/**/*.ts'",
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' src/index.ts",
-    "test": "jest || true",
-    "seed:restaurant": "ts-node -r tsconfig-paths/register src/parse.ts"
+    "start": "NODE_ENV=development nodemon --watch 'src/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' src/index.ts",
+    "test-server": "NODE_ENV=test ts-node src/index.ts",
+    "test": "NODE_ENV=test jest || true",
+    "seed:restaurant": "NODE_ENV=test ts-node -r tsconfig-paths/register src/parse.ts"
   },
   "keywords": [
     "api",
@@ -23,6 +24,7 @@
   "author": "Andrew Thian",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^23.3.10",
     "@types/node": "^10.12.12",
     "errorhandler": "^1.5.0",
     "jest": "^23.6.0",

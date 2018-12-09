@@ -1,11 +1,10 @@
-import { createConnection, AdvancedConsoleLogger } from "typeorm";
+import { createConnection } from "typeorm";
 import { CSV } from "./csv";
 import { Restaurant } from "./entity/Restaurant"
 import { Schedule } from "./entity/Schedule";
 
 (async () => {
-    const filename = (process.env.NODE_ENV === "development") ? "hours.csv" : "test.csv"
-    const csv = new CSV(filename)
+    const csv = new CSV("test.csv")
     const dbConnection = await createConnection()
     try {
         const dataset = await csv.transformer.getDataPromise()
@@ -17,6 +16,7 @@ import { Schedule } from "./entity/Schedule";
         }
     } catch (error) {
         console.error(error)
+        return dbConnection.close();
     }
     dbConnection.close();
     console.log("Successfully update all restaurants");

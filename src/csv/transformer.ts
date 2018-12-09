@@ -48,6 +48,7 @@ export class Transformer implements TransformerInterface {
      * @param callback callback to retrieve each row of transformed data
      */
     getDataCallback(callback: _Callback): void {
+        console.warn("DeprecationWarning: this method has been unsupported.")
         this.parser.getCSVData((record: _Record) => {
             const transformed = this.transform(record);
             callback(transformed);

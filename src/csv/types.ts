@@ -10,7 +10,7 @@ export enum _Day {
 
 export type _Record = string[];
 
-export type _Callback = (record: _Record) => void;
+export type _Callback = (record: _Record, row: number) => void;
 
 export interface ISchedule {
     day: _Day;

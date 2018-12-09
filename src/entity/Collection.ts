@@ -11,11 +11,11 @@ import { Timestamp } from "./Timestamp"
 import { User } from "./User";
 
  @Entity()
- @Index("user_id", [ "user" ])
  export class Collection {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Index("user_id")
     @ManyToOne(() => User, user => user.collections, {
         nullable: false,
         onDelete: "CASCADE",

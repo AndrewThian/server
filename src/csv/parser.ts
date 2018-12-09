@@ -25,13 +25,15 @@ export class Parser implements IParser {
     }
 
     getCSVData(callback: _Callback) {
+        let counter = 0;
         this.csvParser.on("error", () => {
-            console.error("[Parser] read stream error")
+            throw new Error("[Parser] read stream error")
         }).on("readable", () => {
             let record: _Record;
             // tslint:disable-next-line
             while ((record = this.csvParser.read())) {
-                callback(record);
+                counter++
+                callback(record, counter);
             }
         });
     }

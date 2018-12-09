@@ -41,7 +41,7 @@ export class Utils implements IUtils {
             return dateString;
         }
         const from = this.days.indexOf(dateString[0]);
-        const to = this.days.indexOf(dateString[1]);
+        const to = this.days.indexOf(dateString[1]) + 1;
         return this.days.slice(from, to);
     }
 

@@ -3,19 +3,22 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToMany,
-    Unique,
-    BaseEntity
+    BaseEntity,
+    Index,
+    ManyToMany,
+    JoinTable
 } from "typeorm";
 import { Timestamp } from "./Timestamp";
 import { Schedule } from "./Schedule";
+import { Collection } from "./Collection";
 
 @Entity()
-@Unique("unique_name", [ "name" ])
 export class Restaurant extends BaseEntity {
     
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Index("restaurant_name", { unique: true })
     @Column("varchar",{
         nullable: false,
         length: 255
