@@ -1,3 +1,4 @@
+import moment from "moment";
 import { _Day } from "./types";
 
 export interface IUtils {
@@ -9,12 +10,14 @@ export interface IUtils {
 export class Utils implements IUtils {
     private regex: RegExp;
     private days: _Day[];
+    private currentDays: _Day[];
 
     constructor() {
         this.regex = new RegExp(
             "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)-(Mon|Tue|Wed|Thu|Fri|Sat|Sun)|(Mon|Tue|Wed|Thu|Fri|Sat|Sun)",
             "gi"
         );
+        this.currentDays = [];
         this.days = [
             _Day.Mon,
             _Day.Tue,
@@ -53,8 +56,10 @@ export class Utils implements IUtils {
     getDays(datetimeStrings: string): _Day[] {
         const dateStrings = datetimeStrings.match(this.regex);
         const dates = dateStrings.map(date => this.convertDays(date));
+        /* cache currentDays */
+        this.currentDays = dates.reduce((acc, curr) => [...acc, ...curr], []);
         /* flatten arrays */
-        return dates.reduce((acc, curr) => [...acc, ...curr], []);
+        return this.currentDays;
     }
 
     /**
@@ -71,7 +76,9 @@ export class Utils implements IUtils {
         const timeStrings = datetimeStrings
             .replace(this.regex, "")
             .replace(/[,]/g, "");
-        const [start, end] = timeStrings.trim().split("-");
-        return [start.trim(), end.trim()];
+        const [start, end] = timeStrings
+            .trim().split("-")
+            .map(time => moment(time.trim(), "h:m A").format("HH:mm"))
+        return [start, end];
     }
 }

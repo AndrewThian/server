@@ -4,15 +4,18 @@ import {
     PrimaryGeneratedColumn,
     Column,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    Unique,
+    BaseEntity
 } from "typeorm"
 import { Timestamp } from "./Timestamp"
 import { Restaurant } from "./Restaurant";
 
 @Entity()
 @Index("restaurant_id", [ "restaurant" ])
+@Index("time_index", [ "openingHour", "closingHour" ])
 @Index("date_time_index", [ "dayOfTheWeek", "openingHour", "closingHour" ])
-export class Schedule {
+export class Schedule extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -23,7 +26,7 @@ export class Schedule {
         onUpdate: "RESTRICT"
     })
     @JoinColumn({ name: "restaurant_id" })
-    restaurant: Restaurant | null
+    restaurant: Restaurant | null;
 
     @Column("enum", {
         nullable: true,
@@ -46,4 +49,6 @@ export class Schedule {
 
     @Column(() => Timestamp)
     timestamp: Timestamp;
+
+    // createOrUpdate
 }

@@ -1,53 +1,30 @@
 import { createConnection, Connection } from "typeorm";
-import { csv } from "./csv";
+import { CSV } from "./csv";
 import { Restaurant } from "./entity/Restaurant"
 import { Schedule } from "./entity/Schedule";
-
-// csv.getDataCallback(data => {
-//     console.log(data);
-// });
+import { User } from "./entity/User";
 
 createConnection().then(async (connection: Connection) => {
 
-    csv.getDataCallback(async (data) => {
-        console.log(data)
+    const csv = new CSV("hours.csv")
+
+    csv.transformer.getDataCallback(async (data) => {
+        // const restaurant = await Restaurant.createOrUpdate(data.name);
+
+        const result = await connection.query(`INSERT INTO restaurant (name) VALUES (?) ON DUPLICATE KEY UPDATE name=?;`, [data.name, data.name])
+        console.log(result)
+        
+        const restaurant = await Restaurant.findOne({ name: data.name })
+        console.log(restaurant)
+
+        for (const dataSchedule of data.schedule) {
+            let schedule = new Schedule();
+            schedule.dayOfTheWeek = dataSchedule.day;
+            schedule.openingHour = dataSchedule.open;
+            schedule.closingHour = dataSchedule.close;
+            schedule.restaurant = restaurant;
+
+            await connection.manager.save(schedule);
+        }
     })
-
-    // csv.getDataCallback(async (data) => {
-    //     let restaurant = new Restaurant();
-    //     restaurant.name = data.name
-    //     await connection.manager.save(restaurant);
-
-    //     for (const dataSchedule of data.schedule) {
-    //         let schedule = new Schedule();
-    //         schedule.dayOfTheWeek = dataSchedule.day.toUpperCase();
-    //     }
-    // })    
-
-    // const user = new User();
-    // user.username = "new user";
-    // await connection.manager.save(user);
-
-    // const user = await connection.manager.findOne(User, 1)
-    // user.username = "1231231";
-    // user.timestamp.updatedAt = null;
-    // await connection.manager.save(user)
-    // console.log("Saved a uypda user with id: " + user.id);
-
-    // const rest = new Restaurant()
-    // rest.name = "KFC"
-    // await connection.manager.save(rest)
-    // console.log("saved KFC")
-    // let restaurant = await connection.manager.findOne(Restaurant, 1)
-    
-    // let schedule: Schedule
-    // schedule = new Schedule();
-    // schedule.dayOfTheWeek = "SUN"
-    // schedule.closingHour = "05:00"
-    // schedule.openingHour = "03:00"
-    // schedule.restaurant = restaurant
-
-    // connection.manager.save(schedule);
-
-    // console.log(new Date('2007-02-03').getDay())
 }).catch(err => console.error(err))

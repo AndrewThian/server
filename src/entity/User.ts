@@ -3,7 +3,8 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
-    OneToMany
+    OneToMany,
+    BaseEntity
 } from "typeorm";
 
 import { Timestamp } from "./Timestamp"

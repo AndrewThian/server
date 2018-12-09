@@ -1,14 +1,18 @@
 import { 
     Entity,
     PrimaryGeneratedColumn,
+    PrimaryColumn,
     Column,
-    OneToMany
+    OneToMany,
+    Unique,
+    BaseEntity
 } from "typeorm";
 import { Timestamp } from "./Timestamp";
 import { Schedule } from "./Schedule";
 
 @Entity()
-export class Restaurant {
+@Unique("unique_name", [ "name" ])
+export class Restaurant extends BaseEntity {
     
     @PrimaryGeneratedColumn()
     id: number;
@@ -24,4 +28,14 @@ export class Restaurant {
 
     @Column(() => Timestamp)
     timestamp: Timestamp
+
+    static async createOrUpdate(name: string) {
+        let restaurant = await this.findOne({ name })
+        if (!restaurant) {
+            const restaurant = new Restaurant()
+            restaurant.name = name
+            return this.save(restaurant)
+        }
+        return restaurant
+    }
 }
