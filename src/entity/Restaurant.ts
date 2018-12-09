@@ -18,7 +18,7 @@ export class Restaurant extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Index("restaurant_name", { unique: true })
+    @Index({ unique: true })
     @Column("varchar",{
         nullable: false,
         length: 255
@@ -27,6 +27,9 @@ export class Restaurant extends BaseEntity {
 
     @OneToMany(() => Schedule, schedules => schedules.restaurant)
     schedules: Schedule[]
+
+    @ManyToMany(() => Collection, (collection) => collection.restaurants)
+    collections: Collection[]
 
     @Column(() => Timestamp)
     timestamp: Timestamp

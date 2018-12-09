@@ -1,8 +1,17 @@
 import { CSV } from "../../csv";
 import { Restaurant } from "../../entity/Restaurant"
 import { Schedule } from "../../entity/Schedule";
+import { dbConnection } from "../../utils/dbConnection";
+import { getConnection } from "typeorm";
 
 describe("[Integration] csv test suite", () => {
+    beforeAll(async () => {
+        await dbConnection()
+    })
+    afterAll(async () => {
+        await getConnection().close()
+    })
+
     it("should clear database on each run", async  () => {
         const r = await Restaurant.find()
         const s = await Schedule.find()

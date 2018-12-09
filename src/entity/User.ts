@@ -24,7 +24,10 @@ export class User {
     })
     username: string;
 
-    @OneToMany(() => Collection, collections => collections.user )
+    @OneToMany(() => Collection, collections => collections.user, {
+        onDelete: "CASCADE",
+        onUpdate: "RESTRICT"
+    })
     collections: Collection[]
 
     @Column(() => Timestamp)

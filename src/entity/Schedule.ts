@@ -18,21 +18,21 @@ interface Data {
 }
 
 @Entity()
-@Index("time_index", [ "openingHour", "closingHour" ])
-@Index("date_time_index", [ "dayOfTheWeek", "openingHour", "closingHour" ])
-@Unique("unique_schedule", [ "restaurant", "dayOfTheWeek", "openingHour", "closingHour" ])
+@Index([ "openingHour", "closingHour" ])
+@Index([ "dayOfTheWeek", "openingHour", "closingHour" ])
+@Unique([ "restaurant", "dayOfTheWeek", "openingHour", "closingHour" ])
 export class Schedule extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Index("restaurant_id")
+    @Index()
     @ManyToOne(() => Restaurant, restaurants => restaurants.schedules, {
         nullable: false,
         onDelete: "CASCADE",
         onUpdate: "RESTRICT"
     })
-    @JoinColumn({ name: "restaurant_id" })
+    @JoinColumn()
     restaurant: Restaurant | null;
 
     @Column("enum", {

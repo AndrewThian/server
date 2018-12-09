@@ -5,24 +5,35 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
+    ManyToMany,
+    JoinTable,
 } from "typeorm";
 
 import { Timestamp } from "./Timestamp"
 import { User } from "./User";
+import { Restaurant } from "./Restaurant";
 
  @Entity()
  export class Collection {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Index("user_id")
+    @Index()
     @ManyToOne(() => User, user => user.collections, {
         nullable: false,
         onDelete: "CASCADE",
         onUpdate: "RESTRICT",
     })
-    @JoinColumn({ name: "user_id" })
+    @JoinColumn()
     user: User
+
+    @ManyToMany(() => Restaurant, (restaurant) => restaurant.collections, {
+        nullable: false,
+        onDelete: "CASCADE",
+        onUpdate: "RESTRICT"
+    })
+    @JoinTable()
+    restaurants: Restaurant[]
 
     @Column(() => Timestamp)
     timestamp: Timestamp;
