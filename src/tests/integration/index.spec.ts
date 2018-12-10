@@ -1,12 +1,12 @@
 import { CSV } from "../../csv";
 import { Restaurant } from "../../entity/Restaurant"
 import { Schedule } from "../../entity/Schedule";
-import { dbConnection } from "../../utils/dbConnection";
+import connections from "../../utils/connections";
 import { getConnection } from "typeorm";
 
 describe("[Integration] csv test suite", () => {
     beforeAll(async () => {
-        await dbConnection()
+        await connections.db()
     })
     afterAll(async () => {
         await getConnection().close()
