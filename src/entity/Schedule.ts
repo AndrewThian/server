@@ -43,12 +43,14 @@ export class Schedule extends BaseEntity {
     dayOfTheWeek: string | null;
 
     @Column("time", {
+        precision: 0,
         nullable: false,
         name: "open_hour"
     })
     openingHour: string;
 
     @Column("time", {
+        precision: 0,
         nullable: false,
         name: "close_hour"
     })

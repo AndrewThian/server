@@ -6,7 +6,7 @@ import {
     BaseEntity,
     Index,
     ManyToMany,
-    JoinTable
+    JoinColumn
 } from "typeorm";
 import { Timestamp } from "./Timestamp";
 import { Schedule } from "./Schedule";

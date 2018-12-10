@@ -4,6 +4,7 @@ import {
 
 export class Timestamp {
     @Column("timestamp", {
+        select: false,
         precision: 3,
         nullable: false,
         name: "created_at",
@@ -12,6 +13,7 @@ export class Timestamp {
     createdAt: Date;
 
     @Column("timestamp", {
+        select: false,
         precision: 3,
         nullable: false,
         name: "updated_at",

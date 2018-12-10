@@ -22,5 +22,17 @@ export const commonErrors = {
     DatabaseError: {
         httpCode: 500,
         location: "[Database Connection]"
+    },
+    DataLayerError: {
+        httpCode: 500
+    },
+    DataNotFound: {
+        httpCode: 404
+    },
+    AlreadyInDatabase: {
+        httpCode: 409
+    },
+    MissingDataError: {
+        httpCode: 422
     }
 }

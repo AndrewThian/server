@@ -4,14 +4,17 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     OneToMany,
-    BaseEntity
+    BaseEntity,
+    AfterLoad,
+    AfterInsert,
+    Unique
 } from "typeorm";
 
 import { Timestamp } from "./Timestamp"
 import { Collection } from "./Collection";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn({
         name:"id"
@@ -20,7 +23,8 @@ export class User {
 
     @Column("varchar",{
         nullable: false,
-        length: 255
+        length: 255,
+        unique: true
     })
     username: string;
 

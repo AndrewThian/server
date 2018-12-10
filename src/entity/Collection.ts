@@ -7,6 +7,8 @@ import {
     JoinColumn,
     ManyToMany,
     JoinTable,
+    BaseEntity,
+    Unique,
 } from "typeorm";
 
 import { Timestamp } from "./Timestamp"
@@ -14,7 +16,8 @@ import { User } from "./User";
 import { Restaurant } from "./Restaurant";
 
  @Entity()
- export class Collection {
+ @Unique([ "user", "name" ])
+ export class Collection extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -26,6 +29,13 @@ import { Restaurant } from "./Restaurant";
     })
     @JoinColumn()
     user: User
+
+    @Index()
+    @Column("varchar", {
+        nullable: false,
+        length: 255
+    })
+    name: string
 
     @ManyToMany(() => Restaurant, (restaurant) => restaurant.collections, {
         nullable: false,
