@@ -4,9 +4,11 @@ import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import logger from "morgan";
-import { setupSocket } from "./socket"
+
 // db connection
 import connections from "@utils/connections";
+
+import { setupSocket } from "./socket"
 import { UserRouter } from "@modules/user/UserRouter";
 import { RestRouter } from "@modules/restaurant/RestRouter";
 import { UserCollectionRouter } from "@modules/userCollection/UserCollectionRouter";
@@ -27,7 +29,7 @@ class AppServer {
         this.app = express();
         this.server = http.createServer(this.app);
         this.io = socket(this.server)
-        
+
         this.io.on("connection", () => console.log("user connected"))
 
         this.config();
@@ -65,6 +67,7 @@ class AppServer {
     }
 
     private async indexRoute (req: Request, res: Response, next: NextFunction) {
+        res.io.emit("chat message", "index hi")
         res.status(200).json({
             app: "restfulrant-api",
             env: `${process.env.NODE_ENV}`,

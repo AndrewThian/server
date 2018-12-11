@@ -1,0 +1,16 @@
+node_modules
+coverage
+.prettierrc
+schema.sql
+npm-debug.log
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+.env
+src/tests/**/*
+mysql/**/*
+README.md
+LICENSE
+.vscode
