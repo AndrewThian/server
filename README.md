@@ -1,7 +1,7 @@
 ## Typescript ##
 
 - Use [tsconfig-paths-webpack-plugin](https://github.com/dividab/tsconfig-paths-webpack-plugin/blob/master/example/webpack.config.js) for production
-- been having a bit of issue with typescript type namespace declaration @types, for now I'm just overriding the `any` type for socket.io
+- ~~been having a bit of issue with typescript type namespace declaration @types, for now I'm just overriding the `any` type for socket.io~~
 
 ## Typeorm ##
 

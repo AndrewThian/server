@@ -4,7 +4,7 @@ import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import logger from "morgan";
-import { SocketIO } from "./socket"
+import { setupSocket } from "./socket"
 // db connection
 import connections from "@utils/connections";
 import { UserRouter } from "@modules/user/UserRouter";
@@ -26,8 +26,9 @@ class AppServer {
     constructor() {
         this.app = express();
         this.server = http.createServer(this.app);
-        this.io = new SocketIO(this.server, this.app).io
-
+        this.io = socket(this.server)
+        
+        // this.startSocket()
         this.config();
         this.connectDB().catch(console.error);
 
@@ -45,6 +46,7 @@ class AppServer {
     }
 
     public config() {
+        this.app.use(setupSocket(this.io))
         this.app.use(logger("dev"))
         this.app.use(helmet()) // lightweight header checks
         this.app.use(cors()) // cross-origin-headers
@@ -62,7 +64,6 @@ class AppServer {
     }
 
     private async indexRoute (req: Request, res: Response, next: NextFunction) {
-        //@ts-ignore
         res.io.emit("chat message", "hi there from index route")
         res.status(200).json({
             app: "restfulrant-api",
@@ -70,6 +71,14 @@ class AppServer {
             time: Date.now()
         })
     }
+
+    // private startSocket() {
+    //     this.io.on("connection", (socket) => {
+    //         socket.on("chat message", msg => {
+    //             socket.emit("chat message", msg)
+    //         })
+    //     })
+    // }
 }
 
 export const server =  new AppServer().server
