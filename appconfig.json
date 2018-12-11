@@ -1,0 +1,30 @@
+{
+    "development": {
+        "id": "development",
+        "server": {
+            "port": 3000,
+            "host": "localhost"
+        },
+        "client": {
+            "port": 8080,
+            "host": "localhost"
+        },
+        "db": {},
+        "mailer": {}
+    },
+    "test": {
+        "id": "test",
+        "server": {
+            "port": 3000,
+            "host": "localhost"
+        },
+        "client": {
+            "port": 8080,
+            "host": "localhost"
+        },
+        "mailer": {
+            "username": "test@gmail.com",
+            "password": "password"
+        }
+    }
+}

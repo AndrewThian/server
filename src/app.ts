@@ -28,7 +28,8 @@ class AppServer {
         this.server = http.createServer(this.app);
         this.io = socket(this.server)
         
-        // this.startSocket()
+        this.io.on("connection", () => console.log("user connected"))
+
         this.config();
         this.connectDB().catch(console.error);
 
@@ -64,7 +65,6 @@ class AppServer {
     }
 
     private async indexRoute (req: Request, res: Response, next: NextFunction) {
-        res.io.emit("chat message", "hi there from index route")
         res.status(200).json({
             app: "restfulrant-api",
             env: `${process.env.NODE_ENV}`,

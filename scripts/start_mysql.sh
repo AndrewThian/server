@@ -36,7 +36,7 @@ CONTAINER_ID=restfulrant-mysql
 docker run --rm -d \
 --name $CONTAINER_ID \
 -e MYSQL_ROOT_PASSWORD=$ROOT_PASSWORD \
--e MYSQL_DATABASE=$DEV_DB \
+-e MYSQL_DATABASE=$DB_NAME \
 -v $ROOT_DIR/mysql/init:/docker-entrypoint-initdb.d/ \
 -v $ROOT_DIR/mysql/db:/var/lib/mysql \
 -p 3306:3306 \

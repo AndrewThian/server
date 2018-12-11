@@ -1,9 +1,5 @@
 unset ROOT_PASSWORD
 
-unset DEV_DB
-unset DEV_DB_USER
-unset DEV_DB_PASSWORD
-
-unset TEST_DB
-unset TEST_DB_USER
-unset TEST_DB_PASSWORD
+unset DB_NAME
+unset DB_USER
+unset DB_PASSWORD
