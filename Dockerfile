@@ -6,6 +6,8 @@ COPY package*.json ./
 
 RUN npm install
 
+HEALTHCHECK --interval=30s CMD node healthcheck.js
+
 COPY . .
 
 ENV DB_USER=${DB_USER} \

@@ -14,6 +14,7 @@ import { RestRouter } from "@modules/restaurant/RestRouter";
 import { UserCollectionRouter } from "@modules/userCollection/UserCollectionRouter";
 import { CollectionItemRouter } from "@modules/collectionItem/CollectionItemRouter";
 import { CollectionRouter } from "@modules/collection/CollectionRouter";
+import { getConnectionManager } from "typeorm";
 
 class AppServer {
     public app: express.Application;
@@ -59,6 +60,7 @@ class AppServer {
 
     private routes () {
         this.app.get("/", this.indexRoute.bind(this))
+        this.app.get("/health", this.healthRoute.bind(this))
         this.app.use("/users", this.user)
         this.app.use("/users/:id/collections", this.userCollection)
         this.app.use("/collections", this.collection)
@@ -72,6 +74,14 @@ class AppServer {
             app: "restfulrant-api",
             env: `${process.env.NODE_ENV}`,
             time: Date.now()
+        })
+    }
+
+    private async healthRoute (req: Request, res: Response, next: NextFunction) {
+        const connected = await getConnectionManager().has("default")
+        res.status(200).json({
+            dbConnection: connected,
+            appHealth: "OK"
         })
     }
 
