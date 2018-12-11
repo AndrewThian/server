@@ -8,10 +8,11 @@
     "url": "git@github.com:AndrewThian/server.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -r tsconfig-paths/register",
     "prettify:ts": "prettier --write --config ./.prettierrc '{src,tests}/**/*.ts'",
     "lint:ts": "tslint -c tslint.json '{src,tests}/**/*.ts'",
     "start": "NODE_ENV=development nodemon --watch 'src/**/*.ts' --exec 'ts-node -r tsconfig-paths/register' src/index.ts",
+    "start:prod": "node -r ./tsconfig-paths-bootstrap.js dist/index.js",
     "start-test": "node src/index.js",
     "test-server": "NODE_ENV=test ts-node src/index.ts",
     "test": "NODE_ENV=test jest || true",

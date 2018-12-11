@@ -1,7 +1,10 @@
-import express from "express";
+import http from "http";
+import socket from "socket.io";
+import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import logger from "morgan";
+import { SocketIO } from "./socket"
 // db connection
 import connections from "@utils/connections";
 import { UserRouter } from "@modules/user/UserRouter";
@@ -12,6 +15,8 @@ import { CollectionRouter } from "@modules/collection/CollectionRouter";
 
 class AppServer {
     public app: express.Application;
+    public server: http.Server;
+    public io: socket.Server;
     public user: express.Router;
     public restaurant: express.Router;
     public collection: express.Router;
@@ -20,6 +25,11 @@ class AppServer {
 
     constructor() {
         this.app = express();
+        this.server = http.createServer(this.app);
+        this.io = new SocketIO(this.server, this.app).io
+
+        this.config();
+        this.connectDB().catch(console.error);
 
         this.user = new UserRouter().router;
         this.restaurant = new RestRouter().router;
@@ -27,10 +37,8 @@ class AppServer {
         this.userCollection = new UserCollectionRouter().router;
         this.collectionItem = new CollectionItemRouter().router;
 
-        this.connectDB().catch(this.handleError.bind(this))
-        this.config();
         this.routes();
-}
+    }
 
     async connectDB () {
         await connections.db();
@@ -45,14 +53,7 @@ class AppServer {
     }
 
     private routes () {
-        this.app.get("/", async (_, res) => {
-            res.status(200).json({
-                app: "restfulrant-api",
-                env: `${process.env.NODE_ENV}`,
-                time: Date.now()
-            })
-        })
-
+        this.app.get("/", this.indexRoute.bind(this))
         this.app.use("/users", this.user)
         this.app.use("/users/:id/collections", this.userCollection)
         this.app.use("/collections", this.collection)
@@ -60,9 +61,15 @@ class AppServer {
         this.app.use("/restaurants", this.restaurant)
     }
 
-    private handleError (error: Error) {
-        this.app.emit("error", error)
+    private async indexRoute (req: Request, res: Response, next: NextFunction) {
+        //@ts-ignore
+        res.io.emit("chat message", "hi there from index route")
+        res.status(200).json({
+            app: "restfulrant-api",
+            env: `${process.env.NODE_ENV}`,
+            time: Date.now()
+        })
     }
 }
 
-export const app = new AppServer().app
+export const server =  new AppServer().server

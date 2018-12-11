@@ -10,6 +10,10 @@
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": "./",
+        "typeRoots": [
+            "node_modules/@types",
+            "types"
+        ],
         "paths": {
             "@modules/*": [
                 "src/modules/*"
@@ -19,10 +23,6 @@
             ],
             "@entity/*": [
                 "src/entity/*"
-            ],
-            "*": [
-                "node_modules/*",
-                "src/types/*"
             ]
         },
         "lib": [
@@ -33,5 +33,5 @@
     },
     "include": [
         "src/**/*"
-    ],
+    ]
 }
