@@ -14,3 +14,4 @@ mysql/**/*
 README.md
 LICENSE
 .vscode
+!scripts/wait-for-it.sh

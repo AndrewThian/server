@@ -10,7 +10,7 @@ services:
       - "/usr/src/app/node_modules"
     env_file:
       - docker.api.env
-    command: ["npm", "start"]
+    command: ["./scripts/wait-for-it.sh", "mysql:3306", "--", "npm", "start"]
   mysql:
     container_name: restfulrant-mysql
     image: mysql:5.7
