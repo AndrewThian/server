@@ -4,17 +4,20 @@ import express, { Request, Response, NextFunction } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import logger from "morgan";
-
+import { getConnectionManager } from "typeorm";
 // db connection
 import connections from "@utils/connections";
-
+// socket middleware
 import { setupSocket } from "./socket"
+// error middleware
+import { logErrors, clientErrorHandler, catchAllHandler } from "@utils/errors";
+// routers
 import { UserRouter } from "@modules/user/UserRouter";
 import { RestRouter } from "@modules/restaurant/RestRouter";
 import { UserCollectionRouter } from "@modules/userCollection/UserCollectionRouter";
 import { CollectionItemRouter } from "@modules/collectionItem/CollectionItemRouter";
 import { CollectionRouter } from "@modules/collection/CollectionRouter";
-import { getConnectionManager } from "typeorm";
+
 
 class AppServer {
     public app: express.Application;
@@ -56,6 +59,9 @@ class AppServer {
         this.app.use(cors()) // cross-origin-headers
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(logErrors)
+        this.app.use(clientErrorHandler)
+        this.app.use(catchAllHandler)
     }
 
     private routes () {
@@ -69,7 +75,7 @@ class AppServer {
     }
 
     private async indexRoute (req: Request, res: Response, next: NextFunction) {
-        res.io.emit("chat message", "index hi")
+        // res.io.emit("chat message", "index hi")
         res.status(200).json({
             app: "restfulrant-api",
             env: `${process.env.NODE_ENV}`,

@@ -1,3 +1,5 @@
+import express, { Request, Response, NextFunction } from "express"
+
 export class AppError extends Error {
     public type: object
     public error?: Error | null
@@ -35,4 +37,40 @@ export const commonErrors = {
     MissingDataError: {
         httpCode: 422
     }
+}
+
+export const logErrors = (
+    err: AppError, 
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+) => {
+    console.error(err.stack)
+    next()
+}
+
+export const clientErrorHandler = (
+    err: AppError, 
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+) => {
+    if (req.xhr) {
+        const { description } = err
+        res.status(500).json({
+            error: "server error",
+            description
+        })
+    } else {
+        next(err)
+    }
+}
+
+export const catchAllHandler = (
+    err: AppError, 
+    req: Request, 
+    res: Response
+) => {
+    res.status(500)
+    res.render("error", { error: err })
 }

@@ -1,5 +1,4 @@
-import socket from "socket.io"
-import http from "http"
+import socket from "socket.io";
 import express from "express";
 
 export const setupSocket = (socket: socket.Server) => 
