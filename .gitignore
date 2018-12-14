@@ -6,3 +6,4 @@ dist/**/*
 coverage/**/*
 docker.api.env
 docker.mysql.env
+google-keys.json
