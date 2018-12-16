@@ -1,13 +1,9 @@
-// import {Index,Entity, PrimaryColumn, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, ManyToOne, ManyToMany, JoinColumn, JoinTable, RelationId} from "typeorm";
 import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
     OneToMany,
-    BaseEntity,
-    AfterLoad,
-    AfterInsert,
-    Unique
+    BaseEntity
 } from "typeorm";
 
 import { Timestamp } from "./Timestamp"
@@ -26,7 +22,19 @@ export class User extends BaseEntity {
         length: 255,
         unique: true
     })
-    username: string;
+    email: string;
+
+    @Column("varchar", {
+        length: 255,
+        nullable: true
+    })
+    accessToken: string;
+
+    @Column("varchar", {
+        length: 255,
+        nullable: true
+    })
+    refreshToken: string;
 
     @OneToMany(() => Collection, collections => collections.user, {
         onDelete: "CASCADE",

@@ -36,6 +36,9 @@ export const commonErrors = {
     },
     MissingDataError: {
         httpCode: 422
+    },
+    RouterError: {
+        httpCode: 500
     }
 }
 
@@ -45,8 +48,12 @@ export const logErrors = (
     res: Response, 
     next: NextFunction
 ) => {
-    console.error(err.stack)
-    next()
+    console.log("LOG ERRORS=================")
+    console.error(err)
+    if (err.error) {
+        console.error(err.error)
+    }
+    next(err)
 }
 
 export const clientErrorHandler = (
@@ -57,7 +64,8 @@ export const clientErrorHandler = (
 ) => {
     if (req.xhr) {
         const { description } = err
-        res.status(500).json({
+        //@ts-ignore
+        res.status(err.type.status | 500).json({
             error: "server error",
             description
         })
@@ -69,8 +77,11 @@ export const clientErrorHandler = (
 export const catchAllHandler = (
     err: AppError, 
     req: Request, 
-    res: Response
+    res: Response,
+    next: NextFunction
 ) => {
-    res.status(500)
-    res.render("error", { error: err })
+    //@ts-ignore
+    return res.status(err.type.status | 500).json({
+        error: err.message
+    })
 }

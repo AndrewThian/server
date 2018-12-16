@@ -1,5 +1,4 @@
-import { Router, Response, NextFunction } from "express";
-import { Request } from "express-serve-static-core";
+import { Request, Router, Response, NextFunction } from "express";
 import { UserManager } from "./UserManager";
 import { commonErrors, AppError } from "@utils/errors";
 
@@ -38,11 +37,11 @@ export class UserRouter {
         })
         this.router.post("/", async (req: Request, res: Response, next: NextFunction) => {
             try {
-                const { username } = req.body
-                if (!username) {
-                    return next(new AppError(commonErrors.MissingDataError, "missing username", true))
+                const { email } = req.body
+                if (!email) {
+                    return next(new AppError(commonErrors.MissingDataError, "missing email", true))
                 }
-                const [code, data] = await this.manager.add(username)
+                const [code, data] = await this.manager.add(email)
                 res.status(code as number).json(data)
             } catch (e) {
                 next(e)
